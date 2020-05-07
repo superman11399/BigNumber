@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include <string>
+
 #include "Q.h"
 #include "Func.h"
 using namespace std;
@@ -34,14 +34,14 @@ string chia2(string str)
 	string tmp;
 	unsigned short int i = 0, j = 0, k = 0;
 	tmp.resize(str.length());
-	if (str[0] - 48 < 2){
+	if (str[0] - '0' < 2){
 		i = 1;
 		j = 10;
 	}
 	for (; i< str.length(); i++)
 	{
-		tmp[k++] = ((str[i] - 48 + j) / 2 + 48);
-		j = ((str[i] - 48 + j) % 2) * 10;
+		tmp[k++] = ((str[i] - '0' + j) / 2 + '0');
+		j = ((str[i] - '0' + j) % 2) * 10;
 	}
 	tmp.resize(k);
 	return tmp;
@@ -54,7 +54,7 @@ void chuyenNhiPhan(string &str, int* &binary)
 		binary[i] = 0;
 	unsigned short int i;
 	for (i = 0; str.length() != 0; i++){
-		if ((str[str.length() - 1] - 48) % 2 != 0){
+		if ((str[str.length() - 1] - '0') % 2 != 0){
 			binary[i] = 1;
 			str[str.length() - 1] -= 1;
 		}
@@ -64,13 +64,3 @@ void chuyenNhiPhan(string &str, int* &binary)
 	reverse(binary, binary + 128);
 }
 
-
-void ScanQInt(QInt &x){
-	string s; getline(cin, s);
-	int* bin;
-	chuyenNhiPhan(s, bin);
-	x.SetBitFromBin(bin);
-}
-void PrintQInt(QInt x){
-	cout << x << endl;
-}

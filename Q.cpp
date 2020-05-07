@@ -1,4 +1,4 @@
-
+#include <string>
 #include "Q.h"
 #include "Func.h"
 
@@ -12,4 +12,15 @@ ostream& operator << (ostream&os, QInt p){
 	for (int j = 0; j < 32; j++)
 		os << GetBit(p.data[i], j);
 	return os;
+}
+
+
+void QInt::Input(){
+	string s; getline(cin, s);
+	int* bin;
+	chuyenNhiPhan(s, bin);
+	this->SetBitFromBin(bin);
+}
+void QInt::Output(){
+	cout << *this << endl;
 }

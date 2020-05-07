@@ -13,6 +13,3 @@ void XuatMang(int a[], int n);
 string chia2(string str);
 void chuyenNhiPhan(string &str, int* &binary);
 
-
-void ScanQInt(QInt &x);
-void PrintQInt(QInt x);

@@ -10,5 +10,7 @@ public:
 	}
 	friend ostream& operator << (ostream&os, QInt p);
 	void SetBitFromBin(int* bin);
+	void Input();
+	void Output();
 	~QInt(){}
 };

@@ -16,8 +16,9 @@ void main(){
 
 	
 	 QInt qi;
-	 ScanQInt(qi);
-	 PrintQInt(qi);
+	 qi.Input();
+	 qi.Output();
 
+	
 
 }
