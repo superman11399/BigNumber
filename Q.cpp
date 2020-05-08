@@ -108,7 +108,7 @@ QInt QInt::operator>>(int a)
     {
         for (int i=3;i>0;i--)
         {
-            tmp[i]=(tmp[i]>>a)|(tmp[i-1]<<(32-a));
+            tmp[i]=(tmp[i]>>a)|((unsigned int)tmp[i-1]<<(32-a));
         }
         tmp[0]=tmp[0]>>a;
     }
