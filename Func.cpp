@@ -47,9 +47,9 @@ string chia2(string str)
 	return tmp;
 }
 
-void chuyenNhiPhan(string &str, int* &binary)
+void chuyenNhiPhan(string &str, bool* &binary)
 {
-	binary = new int[128];
+	binary = new bool[128];
 	for (int i = 0; i < 128; i++)
 		binary[i] = 0;
 	unsigned short int i;
@@ -64,3 +64,50 @@ void chuyenNhiPhan(string &str, int* &binary)
 	reverse(binary, binary + 128);
 }
 
+string Cong2Chuoi(string a, string b){
+	while (a.length() < b.length())
+		a.insert(0, "0");
+	while (b.length() < a.length())
+		b.insert(0, "0");
+	int i = a.length() - 1;
+	int nho = 0;
+	string kq; kq.resize(i + 1);
+	while (i >= 0){
+		int tmp = (a[i] + b[i] + nho - 2 * '0');
+		kq[i] = tmp % 10 + '0';
+		if (tmp>9) nho = 1;
+		else nho = 0;
+		i--;
+	}
+	if (nho)
+		kq.insert(0, "1");
+	return kq;
+}
+string Tru2Chuoi(string a, string b){	//a>b
+	while (b.length() < a.length())
+		b.insert(0, "0");
+	int nho = 0;
+	int i = a.length() - 1;
+	string kq; kq.resize(i + 1);
+	//if (a[i] - b[i] < 0)
+	//	nho = 10;
+	while (i >= 0){
+		int tmp = a[i] - b[i] - nho;
+		if (tmp < 0){
+			kq[i] = (tmp + 10) % 10 + '0';
+			nho = 1;
+		}
+		else {
+			kq[i] = (tmp) % 10 + '0';
+			nho = 0;
+		}
+		i--;
+	}
+	return kq;
+}
+string LuyThua2(int n){
+	string kq = "1";
+	for (int i = 1; i <= n; i++)
+		kq = Cong2Chuoi(kq, kq);
+	return kq;
+}

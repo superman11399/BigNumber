@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
 using namespace std;
 class QInt{
@@ -9,8 +9,9 @@ public:
 			data[i] = 0;
 	}
 	friend ostream& operator << (ostream&os, QInt p);
-	void SetBitFromBin(int* bin);
+	void SetBitFromBin(bool* bin);
 	void Input();
-	void Output();
+	void PrintDec();	//in chuỗi thập phân
+	void PrintBin();	//in chuỗi nhị phân
 	~QInt(){}
 };

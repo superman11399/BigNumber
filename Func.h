@@ -11,5 +11,8 @@ int BinToDec(int kq[32]);
 void XuatMang(int a[], int n);
 
 string chia2(string str);
-void chuyenNhiPhan(string &str, int* &binary);
+void chuyenNhiPhan(string &str, bool* &binary);
 
+string Cong2Chuoi(string a, string b);
+string Tru2Chuoi(string a, string b);	//a>b
+string LuyThua2(int n);

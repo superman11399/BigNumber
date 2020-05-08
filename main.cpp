@@ -5,20 +5,19 @@
 using namespace std;
 
 void main(){
-	 /*int a = 5242593;
-	 int b = 7;
-	 //cout << ~a << endl;
-	 int kq[32];
-	 DocDayBit(a,kq);
-	 //XuatMang(kq, 32);
-	 b = BinToDec(kq);*/
-
-
-	
+		
 	 QInt qi;
 	 qi.Input();
-	 qi.Output();
+	 qi.PrintBin();
+	 qi.PrintDec();
 
+	/*string a;
+	getline(cin, a);
+	string b;
+	getline(cin, b);
+	string c = Cong2Chuoi(a, b);
+	string c = Tru2Chuoi(a, b);*/
+	//cout << c << endl;
 	
 
 }
