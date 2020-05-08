@@ -100,6 +100,76 @@ QInt QInt::operator~()
        return tmp;
 }
 
+bool QInt::operator>(QInt q)
+{
+	//so sánh khi cả 2 cùng âm
+
+	//if ((*this).data[0] < 0 && q.data[0] < 0)
+	//{
+	//	if (data[0] > q.data[0]) return true;
+	//	else if (data[0] < q.data[0]) return false;
+
+	//	for (int i = 1; i < 4; i++)
+	//	{
+	//		if (data[i] < q.data[i]) return true;
+	//		else if (data[i] > q.data[i]) return false;
+	//	}
+	//}
+
+	//so sánh trong các th khác 2 số cùng âm
+	for (int i = 0; i < 4; i++)
+	{
+		if (data[i] > q.data[i]) return true;
+		else if (data[i] < q.data[i]) return false;
+	}
+	return false;
+}
+
+bool QInt::operator<(QInt q)
+{
+	//so sánh khi cả 2 cùng âm
+
+	//if ((*this).data[0] < 0 && q.data[0] < 0)
+	//{
+	//	if (data[0] < q.data[0]) return true;
+	//	else if (data[0] > q.data[0]) return false;
+	//
+	//	for (int i = 1; i < 4; i++)
+	//	{
+	//		if (data[i] > q.data[i]) return true;
+	//		else if (data[i] < q.data[i]) return false;
+	//	}
+	//}
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (data[i] < q.data[i]) return true;
+		else if (data[i] > q.data[i]) return false;
+	}
+	return false;
+}
+
+bool QInt::operator==(QInt q)
+{
+	for (int i = 0; i < 4; i++)
+	{
+		if (data[i] != q.data[i]) return false;
+	}
+	return true;
+}
+
+bool QInt::operator<=(QInt q)
+{
+	if ((*this) < q || (*this) == q) return true;
+	return false;
+}
+
+bool QInt::operator>=(QInt q)
+{
+	if ((*this) > q || (*this) == q) return true;
+	return false;
+}
+
 QInt QInt::operator>>(int a)
 {
     QInt tmp=*this;
