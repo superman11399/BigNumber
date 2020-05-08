@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "Func.h"
 using namespace std;
 class QInt{
 	int data[4];
@@ -8,12 +9,21 @@ public:
 		for (int i = 0; i < 4; i++)
 			data[i] = 0;
 	}
-    QInt (int n)
+    QInt(int type, string s) : QInt()
     {
-      for (int i = 0; i < 3; i++)
-        data[i] = 0;
-        data[3]=n;
+        switch (type)
+        {
+                // Hệ thập phân
+            case 10:
+            {
+                bool* bin;
+                chuyenNhiPhan(s, bin);
+                this->SetBitFromBin(bin);
+                break;
+            }
+        }
     }
+    
 	friend ostream& operator << (ostream&os, QInt p);
 	void SetBitFromBin(bool* bin);
 	void Input();
@@ -44,4 +54,5 @@ public:
       bool operator>=(QInt a);
       bool operator!=(QInt a);
       bool operator==(QInt a);
+  
 };

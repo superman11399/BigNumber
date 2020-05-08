@@ -92,7 +92,7 @@ QInt QInt::operator^(QInt a)
 
 QInt QInt::operator~()
 {
-      QInt tmp=*this;
+    QInt tmp=*this;
        for (int i=0;i<4;i++)
        {
            tmp[i]=~tmp[i];
@@ -132,7 +132,7 @@ QInt QInt::operator<<(int a)
     {
         for (int i=0;i<4;i++)
         {
-            tmp[i]=(tmp[i]<<a)|(tmp[i+1]>>(32-a));
+            tmp[i]=(tmp[i]<<a)|(unsigned int)tmp[i+1]>>(32-a);
         }
     }
     else
@@ -162,14 +162,14 @@ QInt QInt::operator+(QInt a)
     return tmp1;
 }
 
-
 QInt QInt::operator-(QInt a)
 {
     
-    QInt bu(1);
-    a= ~a + bu;
-    
-    return *this+a;
+    QInt bu1(10,"1");
+    a= ~a;
+    a=a+bu1;
+    QInt result= a + (*this);
+    return result;
 }
 
 bool QInt::operator!=(QInt a)
