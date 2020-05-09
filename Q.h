@@ -23,8 +23,9 @@ public:
             }
         }
     }
-    
+
 	friend ostream& operator << (ostream&os, QInt p);
+
 	void SetBitFromBin(bool* bin);
 	void Input();
 	void PrintDec();	//in chuỗi thập phân

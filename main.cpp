@@ -15,7 +15,7 @@ int main(){
 	//cout << c << endl;
 	
     QInt qi,qo;
-    /*qi.Input();
+  /*  qi.Input();
     qi.PrintBin();
     qi=qi>>2;
     qi.PrintBin();

@@ -1,4 +1,4 @@
-#include <string>
+﻿#include <string>
 #include "Q.h"
 #include "Func.h"
 
@@ -6,18 +6,6 @@ void QInt::SetBitFromBin(bool* bin){
 	for (int i = 0; i < 128; i++)
 		data[i / 32] = SetBit(data[i / 32], i % 32, bin[i]);
 }
-
-ostream& operator << (ostream&os, QInt p){
-	int pos = 0;
-	while (!GetBit(p.data[pos / 32], pos % 32))
-		pos++;
-	while (pos < 128){
-		os << GetBit(p.data[pos / 32], pos % 32);
-		pos++;
-	}
-	return os;
-}
-
 
 void QInt::Input(){
 	string s; getline(cin, s);
@@ -48,9 +36,90 @@ void QInt::PrintDec(){
 	cout << kq;
 }
 
+ostream& operator << (ostream& os, QInt p) {
+    int pos = 0;
+    while (!GetBit(p.data[pos / 32], pos % 32))
+        pos++;
+    while (pos < 128) {
+        os << GetBit(p.data[pos / 32], pos % 32);
+        pos++;
+    }
+    return os;
+}
+
 int& QInt::operator[](int ind)
 {
     return data[ind];
+}
+
+bool QInt::operator>(QInt q)
+{
+    //so sánh khi cả 2 cùng âm
+
+    //if ((*this).data[0] < 0 && q.data[0] < 0)
+    //{
+    //	if (data[0] > q.data[0]) return true;
+    //	else if (data[0] < q.data[0]) return false;
+
+    //	for (int i = 1; i < 4; i++)
+    //	{
+    //		if (data[i] < q.data[i]) return true;
+    //		else if (data[i] > q.data[i]) return false;
+    //	}
+    //}
+
+    //so sánh trong các th khác 2 số cùng âm
+    for (int i = 0; i < 4; i++)
+    {
+        if (data[i] > q.data[i]) return true;
+        else if (data[i] < q.data[i]) return false;
+    }
+    return false;
+}
+
+bool QInt::operator<(QInt q)
+{
+    //so sánh khi cả 2 cùng âm
+
+    //if ((*this)[0] < 0 && q[0] < 0)
+    //{
+    //	if ((*this)[0] < q[0]) return true;
+    //	else if ((*this)[0] > q[0]) return false;
+    //
+    //	for (int i = 1; i < 4; i++)
+    //	{
+    //		if ((*this)[i] > q[i]) return true;
+    //		else if ((*this)[i] < q[i]) return false;
+    //	}
+    //}
+
+    for (int i = 0; i < 4; i++)
+    {
+        if ((*this)[i] < q[i]) return true;
+        else if ((*this)[i] > q[i]) return false;
+    }
+    return false;
+}
+
+bool QInt::operator==(QInt q)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (data[i] != q.data[i]) return false;
+    }
+    return true;
+}
+
+bool QInt::operator<=(QInt q)
+{
+    if ((*this) < q || (*this) == q) return true;
+    return false;
+}
+
+bool QInt::operator>=(QInt q)
+{
+    if ((*this) > q || (*this) == q) return true;
+    return false;
 }
 
 QInt& QInt::operator=(QInt a)
@@ -102,47 +171,48 @@ QInt QInt::operator~()
 
 QInt QInt::operator>>(int a)
 {
-    QInt tmp=*this;
-    if (a<0) return tmp<<(-a);
-    if (a<=32)
+    QInt tmp = *this;
+    if (a < 0) return tmp << (-a);
+    if (a <= 32)
     {
-        for (int i=3;i>0;i--)
+        for (int i = 3; i > 0; i--)
         {
-            tmp[i]=(tmp[i]>>a)|((unsigned int)tmp[i-1]<<(32-a));
+            tmp[i] = (tmp[i] >> a) | (unsigned int)tmp[i - 1] << (32 - a);
         }
-        tmp[0]=tmp[0]>>a;
+        tmp[0] = tmp[0] >> a;
     }
     else
     {
-        for (int i=3;i>0;i--)
-              {
-                  tmp[i]=tmp[i-1];
-              }
-        tmp[0]=tmp[0] < 0 ? -1 : 0;
-        tmp=tmp>>(a-32);
+        for (int i = 3; i > 0; i--)
+        {
+            tmp[i] = tmp[i - 1];
+        }
+        tmp[0] = tmp[0] < 0 ? -1 : 0;
+        tmp = tmp >> (a - 32);
     }
     return tmp;
 }
 
 QInt QInt::operator<<(int a)
 {
-    QInt tmp=*this;
-    if (a<0) return tmp>>(-a);
-    if (a<=32)
+    QInt tmp = *this;
+    if (a < 0) return tmp >> (-a);
+    if (a <= 32)
     {
-        for (int i=0;i<4;i++)
+        for (int i = 0; i < 3; i++)
         {
-            tmp[i]=(tmp[i]<<a)|(unsigned int)tmp[i+1]>>(32-a);
+            tmp[i] = (tmp[i] << a) | (unsigned int)tmp[i + 1] >> (32 - a);
         }
+        tmp[3] = tmp[3] << a;
     }
     else
     {
-        for (int i=0;i<4;i++)
-              {
-                  tmp[i]=tmp[i+1];
-              }
-        tmp[3]=0;
-        tmp=tmp<<(a-32);
+        for (int i = 0; i < 4; i++)
+        {
+            tmp[i] = tmp[i + 1];
+        }
+        tmp[3] = 0;
+        tmp = tmp << (a - 32);
     }
     return tmp;
 }
