@@ -4,8 +4,34 @@
 #include "Func.h"
 using namespace std;
 
-int main(){
+void main(){
 		
+	 QInt qa,qb;
+	 string s; getline(cin, s);
+	 qa.InputUnsignedDec(s);
+	 string t; getline(cin, t);
+	 qb.InputUnsignedDec(t);
+	 QInt qc;
+	 qc = qa + qb;
+	 //qc.InputSignedDec(s);
+	 qc.PrintBin();
+	 
+	 //qc.PrintBin();
+	 qc.PrintDec(); cout << endl;
+
+	 qa.PrintBin();
+	 qa.PrintDec(); cout << endl;
+	 qb.PrintBin();
+	 qb.PrintDec(); cout << endl;
+
+	 qa= qa << 2; qb= qb >> 3;
+
+	 qa.PrintBin(); 
+	 qa.PrintDec(); cout << endl;
+
+	 qb.PrintBin(); 
+	 qb.PrintDec(); cout << endl;
+
 	/*string a;
 	getline(cin, a);
 	string b;
@@ -23,28 +49,15 @@ int main(){
     qi.PrintBin();
     */
     
-    //qi.Input();
-    //qi.PrintBin();
-    //qo.Input();
-    //qo.PrintBin();
-    //QInt sum=qi+qo;
-    //sum.PrintBin();
-    //QInt sub=qi-qo;
-    //sub.PrintBin();
-    //QInt product=qi*qo;
-    //product.PrintBin();
-    
-    cout << "Nhap so 1: ";
     qi.Input();
-    cout << "Nhap so 2: ";
-    qo.Input();
     qi.PrintBin();
-    cout << endl;
-    (qi.ror()).PrintBin();
-    cout << endl;
-    (qi.rol()).PrintBin();
-
-    cout << endl;
-    (qi / qo).PrintDec();
-
+    qo.Input();
+    qo.PrintBin();
+    QInt sum=qi+qo;
+    sum.PrintBin();
+    QInt sub=qi-qo;
+    sub.PrintBin();
+    QInt product=qi*qo;
+    product.PrintBin();
+    
 }
