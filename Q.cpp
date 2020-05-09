@@ -56,17 +56,17 @@ bool QInt::operator>(QInt q)
 {
     //so sánh khi cả 2 cùng âm
 
-    //if ((*this).data[0] < 0 && q.data[0] < 0)
-    //{
-    //	if (data[0] > q.data[0]) return true;
-    //	else if (data[0] < q.data[0]) return false;
+    if ((*this).data[0] < 0 && q.data[0] < 0)
+    {
+    	if (data[0] > q.data[0]) return true;
+    	else if (data[0] < q.data[0]) return false;
 
-    //	for (int i = 1; i < 4; i++)
-    //	{
-    //		if (data[i] < q.data[i]) return true;
-    //		else if (data[i] > q.data[i]) return false;
-    //	}
-    //}
+    	for (int i = 1; i < 4; i++)
+    	{
+    		if (data[i] < q.data[i]) return true;
+    		else if (data[i] > q.data[i]) return false;
+    	}
+    }
 
     //so sánh trong các th khác 2 số cùng âm
     for (int i = 0; i < 4; i++)
@@ -81,17 +81,17 @@ bool QInt::operator<(QInt q)
 {
     //so sánh khi cả 2 cùng âm
 
-    //if ((*this)[0] < 0 && q[0] < 0)
-    //{
-    //	if ((*this)[0] < q[0]) return true;
-    //	else if ((*this)[0] > q[0]) return false;
-    //
-    //	for (int i = 1; i < 4; i++)
-    //	{
-    //		if ((*this)[i] > q[i]) return true;
-    //		else if ((*this)[i] < q[i]) return false;
-    //	}
-    //}
+    if ((*this)[0] < 0 && q[0] < 0)
+    {
+    	if ((*this)[0] < q[0]) return true;
+    	else if ((*this)[0] > q[0]) return false;
+    
+    	for (int i = 1; i < 4; i++)
+    	{
+    		if ((*this)[i] > q[i]) return true;
+    		else if ((*this)[i] < q[i]) return false;
+    	}
+    }
 
     for (int i = 0; i < 4; i++)
     {
@@ -349,8 +349,8 @@ QInt QInt::operator/(QInt m)
         {
             //Shift Q, A
             int car = GetBit(q.data[0], 0);
-            a << 1;
-            q << 1;
+            a = a << 1;
+            q = q << 1;
             a.data[3] = a.data[3] | car;
 
 
@@ -374,8 +374,8 @@ QInt QInt::operator/(QInt m)
         {
             //Shift Q, A
             int car = GetBit(q.data[0], 0);
-            a << 1;
-            q << 1;
+            a = a << 1;
+            q = q << 1;
             a.data[3] = a.data[3] | car;
 
 
