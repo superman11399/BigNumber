@@ -1,4 +1,4 @@
-#include <string>
+﻿#include <string>
 #include "Q.h"
 #include "Func.h"
 
@@ -7,11 +7,17 @@ void QInt::SetBitFromBin(bool* bin){
 		data[i / 32] = SetBit(data[i / 32], i % 32, bin[i]);
 }
 
-void QInt::Input(){
-	string s; getline(cin, s);
+void QInt::InputUnsignedDec(string s){
 	bool* bin;
 	chuyenNhiPhan(s, bin);
 	this->SetBitFromBin(bin);
+}
+void QInt::InputSignedDec(string s){
+	s.erase(0, 1);
+	InputUnsignedDec(s);
+	QInt One(10, "1");
+	*this = ~(*this);
+	*this = *this + One;
 }
 void QInt::PrintBin(){
 	//cout << *this << endl;
@@ -31,6 +37,8 @@ void QInt::PrintDec(){
 		kq = Cong2Chuoi(kq, LuyThua2(126-i));
 	if (GetBit(data[0], 0) == 1){
 		kq = Tru2Chuoi(LuyThua2(127), kq);
+		while (kq[0] == '0')
+			kq.erase(0, 1);
 		kq.insert(0, "-");
 	}
 	cout << kq;
@@ -190,7 +198,7 @@ QInt QInt::operator>>(int a)
     {
         for (int i = 3; i > 0; i--)
         {
-            tmp[i] = (unsigned int)(tmp[i] >> a) | tmp[i - 1] << (32 - a);
+			tmp[i] = (unsigned int)(tmp[i] >> a) | tmp[i - 1] << (32 - a);
         }
         tmp[0] = tmp[0] >> a;
     }
@@ -308,16 +316,15 @@ QInt QInt::operator*(QInt a)
         else if (GetBit(tmp[3],31)==0 && Q_am1==1)
         {
             result=result + a;
+         
         }
         Q_am1=GetBit(tmp[3],31);
-       
-        tmp[3] = (unsigned int)tmp[3] >> 1 | tmp[2] << 31;
-        tmp[2] = (unsigned int)tmp[2] >> 1 | tmp[1] << 31;
-        tmp[1] = (unsigned int)tmp[1] >> 1 | tmp[0] << 31;
-        tmp[0] = (unsigned int)tmp[0] >> 1 | result[3] << 31;
-        
+		tmp[3] = (unsigned int)tmp[3] >> 1 | tmp[2] << 31;
+		tmp[2] = (unsigned int)tmp[2] >> 1 | tmp[1] << 31;
+		tmp[1] = (unsigned int)tmp[1] >> 1 | tmp[0] << 31;
+		tmp[0] = (unsigned int)tmp[0] >> 1 | result[3] << 31;
         result=result>>1;
-
+       
     }
     return tmp;
 }

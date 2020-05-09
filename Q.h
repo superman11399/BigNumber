@@ -26,7 +26,8 @@ public:
 	friend ostream& operator << (ostream&os, QInt p);
 
 	void SetBitFromBin(bool* bin);
-	void Input();
+	void InputUnsignedDec(string s);
+	void InputSignedDec(string s);
 	void PrintDec();	//in chuỗi thập phân
 	void PrintBin();	//in chuỗi nhị phân
     int demBit();
