@@ -23,7 +23,6 @@ public:
             }
         }
     }
-
 	friend ostream& operator << (ostream&os, QInt p);
 
 	void SetBitFromBin(bool* bin);
