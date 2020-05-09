@@ -349,8 +349,8 @@ QInt QInt::operator/(QInt m)
         {
             //Shift Q, A
             int car = GetBit(q.data[0], 0);
-            a << 1;
-            q << 1;
+            a = a << 1;
+            q = q << 1;
             a.data[3] = a.data[3] | car;
 
 
@@ -374,8 +374,8 @@ QInt QInt::operator/(QInt m)
         {
             //Shift Q, A
             int car = GetBit(q.data[0], 0);
-            a << 1;
-            q << 1;
+            a = a << 1;
+            q = q << 1;
             a.data[3] = a.data[3] | car;
 
 
