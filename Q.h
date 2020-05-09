@@ -45,6 +45,9 @@ public:
       QInt operator-(QInt a);
       QInt operator*(QInt a);
       QInt operator/(QInt a);
+
+      QInt ror();
+      QInt rol();
       
       QInt operator>>(int n);
       QInt operator<<(int n);

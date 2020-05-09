@@ -56,17 +56,17 @@ bool QInt::operator>(QInt q)
 {
     //so sánh khi cả 2 cùng âm
 
-    //if ((*this).data[0] < 0 && q.data[0] < 0)
-    //{
-    //	if (data[0] > q.data[0]) return true;
-    //	else if (data[0] < q.data[0]) return false;
+    if ((*this).data[0] < 0 && q.data[0] < 0)
+    {
+    	if (data[0] > q.data[0]) return true;
+    	else if (data[0] < q.data[0]) return false;
 
-    //	for (int i = 1; i < 4; i++)
-    //	{
-    //		if (data[i] < q.data[i]) return true;
-    //		else if (data[i] > q.data[i]) return false;
-    //	}
-    //}
+    	for (int i = 1; i < 4; i++)
+    	{
+    		if (data[i] < q.data[i]) return true;
+    		else if (data[i] > q.data[i]) return false;
+    	}
+    }
 
     //so sánh trong các th khác 2 số cùng âm
     for (int i = 0; i < 4; i++)
@@ -81,17 +81,17 @@ bool QInt::operator<(QInt q)
 {
     //so sánh khi cả 2 cùng âm
 
-    //if ((*this)[0] < 0 && q[0] < 0)
-    //{
-    //	if ((*this)[0] < q[0]) return true;
-    //	else if ((*this)[0] > q[0]) return false;
-    //
-    //	for (int i = 1; i < 4; i++)
-    //	{
-    //		if ((*this)[i] > q[i]) return true;
-    //		else if ((*this)[i] < q[i]) return false;
-    //	}
-    //}
+    if ((*this)[0] < 0 && q[0] < 0)
+    {
+    	if ((*this)[0] < q[0]) return true;
+    	else if ((*this)[0] > q[0]) return false;
+    
+    	for (int i = 1; i < 4; i++)
+    	{
+    		if ((*this)[i] > q[i]) return true;
+    		else if ((*this)[i] < q[i]) return false;
+    	}
+    }
 
     for (int i = 0; i < 4; i++)
     {
@@ -319,5 +319,102 @@ QInt QInt::operator*(QInt a)
         result=result>>1;
 
     }
+    return tmp;
+}
+
+/*Phép chia trên bit
+Đầu vào là một số QInt
+*/
+QInt QInt::operator/(QInt m)
+{
+    QInt zero;
+    if (m == zero)
+        throw "Loi chia 0.";
+
+    QInt q = *this; //Q đóng vai trò là thương.
+
+    //Xét số bị chia là âm hay dương
+    if (data[0] < 0)
+    {
+        QInt a; //A đóng vai trò số dư
+        //dùng để khởi tạo a vối 128 bit 1.
+        bool* bitfull1 = new bool[128];
+        for (int i = 0; i < 128; i++)
+            bitfull1[i] = 1;
+
+        a.SetBitFromBin(bitfull1);
+        delete[]bitfull1;
+
+        for (int i = 0; i < 128; i++)
+        {
+            //Shift Q, A
+            int car = GetBit(q.data[0], 0);
+            a << 1;
+            q << 1;
+            a.data[3] = a.data[3] | car;
+
+
+            a = a - m;
+            if (a.data[0] < 0)
+            {
+                a = a + m;
+                q.data[3] = SetBit(q.data[3], 31, 0); //Q0 = 0
+            }
+            else
+            {
+                q.data[3] = SetBit1(q.data[3], 31); //Q0 = 1
+            }
+        }
+    }
+    else //khi mà số chia dương
+    {
+        QInt a; //A đóng vai trò số dư
+
+        for (int i = 0; i < 128; i++)
+        {
+            //Shift Q, A
+            int car = GetBit(q.data[0], 0);
+            a << 1;
+            q << 1;
+            a.data[3] = a.data[3] | car;
+
+
+            a = a - m;
+            if (a.data[0] < 0)
+            {
+                a = a + m;
+                q.data[3] = SetBit(q.data[3], 31, 0); //Q0 = 0
+            }
+            else
+            {
+                q.data[3] = SetBit1(q.data[3], 31); //Q0 = 1
+            }
+        }
+    }
+    return q;
+}
+
+
+/*
+Phép xoay trái
+*/
+QInt QInt::rol()
+{
+    QInt tmp = *this;
+    int car = GetBit(data[0], 0); //lấy bit đầu tiên của số
+    tmp = tmp << 1;
+    tmp.data[3] = tmp.data[3] | car;//gán bit đầu tiên đã lấy vào cuối dãy bit mới
+    return tmp;
+}
+
+/*
+Phép xoay phải
+*/
+QInt QInt::ror()
+{
+    QInt tmp = *this;
+    int car = GetBit(data[3], 31); //lấy bit cuối cùng của số
+    tmp = tmp >> 1;
+    tmp.data[0] = tmp.data[0] | car << 31;//gán bit cuối đã lấy vào đầu dãy bit mới
     return tmp;
 }
