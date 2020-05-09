@@ -29,6 +29,7 @@ public:
 	void Input();
 	void PrintDec();	//in chuỗi thập phân
 	void PrintBin();	//in chuỗi nhị phân
+    int demBit();
 	~QInt(){}
     
     QInt& operator=(QInt a);

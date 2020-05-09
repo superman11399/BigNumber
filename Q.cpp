@@ -1,4 +1,4 @@
-﻿#include <string>
+#include <string>
 #include "Q.h"
 #include "Func.h"
 
@@ -129,9 +129,11 @@ QInt& QInt::operator=(QInt a)
     return *this;
 }
 
+// Phép toán trên bit: AND (&)
 QInt QInt::operator&(QInt a)
 {
     QInt tmp=*this;
+    // AND lần lượt từng phần tử tương ứng
     for (int i=0;i<4;i++)
     {
         tmp[i]=tmp[i]&a[i];
@@ -139,9 +141,11 @@ QInt QInt::operator&(QInt a)
     return tmp;
 }
 
+// Phép toán trên bit: OR (|)
 QInt QInt::operator|(QInt a)
 {
       QInt tmp=*this;
+    // OR lần lượt từng phần tử tương ứng
        for (int i=0;i<4;i++)
        {
            tmp[i]=tmp[i]|a[i];
@@ -149,9 +153,11 @@ QInt QInt::operator|(QInt a)
        return tmp;
 }
 
+// Phép toán trên bit: XOR (^)
 QInt QInt::operator^(QInt a)
 {
       QInt tmp=*this;
+    // XOR lần lượt từng phần tử tương ứng
        for (int i=0;i<4;i++)
        {
            tmp[i]=tmp[i]^a[i];
@@ -159,9 +165,11 @@ QInt QInt::operator^(QInt a)
        return tmp;
 }
 
+// Phép toán trên bit: NOT (~)
 QInt QInt::operator~()
 {
     QInt tmp=*this;
+    // Đảo lần lượt từng phần tử tương ứng
        for (int i=0;i<4;i++)
        {
            tmp[i]=~tmp[i];
@@ -169,11 +177,16 @@ QInt QInt::operator~()
        return tmp;
 }
 
+// Phép toán trên bit: Phép dịch phải >>
 QInt QInt::operator>>(int a)
 {
     QInt tmp = *this;
+    // Nếu dịch phải một lượng âm thì đổi sang dịch trái
     if (a < 0) return tmp << (-a);
-    if (a <= 32)
+    // Xét trường hợp
+    if (a==0) return tmp;
+    // Nếu dịch nhỏ hơn 32 bit thì xử lí trên từng mảng chứa
+    if (a < 32)
     {
         for (int i = 3; i > 0; i--)
         {
@@ -181,23 +194,30 @@ QInt QInt::operator>>(int a)
         }
         tmp[0] = tmp[0] >> a;
     }
+     // Nếu dịch lớn hơn 32 bit thì đẩy sang phải 1 mảng rồi xử lí bằng đệ quy
     else
     {
         for (int i = 3; i > 0; i--)
         {
             tmp[i] = tmp[i - 1];
         }
+        // Xử lí dịch số học
         tmp[0] = tmp[0] < 0 ? -1 : 0;
         tmp = tmp >> (a - 32);
     }
     return tmp;
 }
 
+// Phép toán trên bit: Phép dịch phải >>
 QInt QInt::operator<<(int a)
 {
     QInt tmp = *this;
+    // Nếu dịch trái một lượng âm thì đổi sang dịch phải
     if (a < 0) return tmp >> (-a);
-    if (a <= 32)
+    // Xét trường hợp
+     if (a==0) return tmp;
+    // Nếu dịch nhỏ hơn 32 bit thì xử lí trên từng mảng chứa
+    if (a < 32)
     {
         for (int i = 0; i < 3; i++)
         {
@@ -205,6 +225,7 @@ QInt QInt::operator<<(int a)
         }
         tmp[3] = tmp[3] << a;
     }
+    // Nếu dịch lớn hơn 32 bit thì đẩy sang trái 1 mảng rồi xử lí bằng đệ quy
     else
     {
         for (int i = 0; i < 4; i++)
@@ -217,24 +238,32 @@ QInt QInt::operator<<(int a)
     return tmp;
 }
 
+// Phép cộng trên bit: Half Adder Logic
 QInt QInt::operator+(QInt a)
 {
     QInt tmp1=*this;
+    // zero = 0, dùng để kiểm tra điều kiện
     QInt zero;
+    // carry dùng để nhớ lượng dư ra khi thực hiện phép cộng
     QInt carry;
+    // điều kiện dừng phép cộng khi lượng nhớ = 0
     while (a!=zero)
     {
+        // Dùng AND để kiểm tra lượng nhớ sau khi cộng
         carry= tmp1 & a;
+        // Dùng XOR để lấy kết quả phép cộng không nhớ
         tmp1=tmp1^a;
+        // Dịch lượng nhớ sang trái để tiếp tục cộng
         carry=carry<<1;
+        // a là số hạng mới
         a = carry;
     }
     return tmp1;
 }
 
+// Phép trừ trên bit: Lấy số âm (dạng bù 2) rồi thực hiện phép cộng
 QInt QInt::operator-(QInt a)
 {
-    
     QInt bu1(10,"1");
     a= ~a;
     a=a+bu1;
@@ -248,4 +277,44 @@ bool QInt::operator!=(QInt a)
     for (int i=0;i<4;i++)
         if (tmp[i]!=a[i]) return true;
     return false;
+}
+
+int QInt::demBit()
+{
+    int count=128;
+    for (int i=0;i<128;i++)
+    {
+        if (GetBit(data[i/32],i)==0)
+            count--;
+        else break;
+    }
+    return count;
+}
+
+// Phép nhân trên bit: Thuật toán Booth
+QInt QInt::operator*(QInt a)
+{
+    QInt tmp=*this;
+    QInt result;
+    // Q[-1] = 0
+    bool Q_am1=0;
+    
+    for (int i=0;i<128;i++)
+    {
+        if (GetBit(tmp[3],31)==1 && Q_am1==0)
+        {
+            result=result - a;
+        }
+        else if (GetBit(tmp[3],31)==0 && Q_am1==1)
+        {
+            result=result + a;
+         
+        }
+        Q_am1=GetBit(tmp[3],31);
+        
+        result=result>>1;
+       
+        tmp=tmp>>1;
+    }
+    return result;
 }
