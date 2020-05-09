@@ -190,7 +190,7 @@ QInt QInt::operator>>(int a)
     {
         for (int i = 3; i > 0; i--)
         {
-            tmp[i] = (tmp[i] >> a) | (unsigned int)tmp[i - 1] << (32 - a);
+            tmp[i] = (unsigned int)(tmp[i] >> a) | tmp[i - 1] << (32 - a);
         }
         tmp[0] = tmp[0] >> a;
     }
@@ -308,13 +308,16 @@ QInt QInt::operator*(QInt a)
         else if (GetBit(tmp[3],31)==0 && Q_am1==1)
         {
             result=result + a;
-         
         }
         Q_am1=GetBit(tmp[3],31);
+       
+        tmp[3] = (unsigned int)tmp[3] >> 1 | tmp[2] << 31;
+        tmp[2] = (unsigned int)tmp[2] >> 1 | tmp[1] << 31;
+        tmp[1] = (unsigned int)tmp[1] >> 1 | tmp[0] << 31;
+        tmp[0] = (unsigned int)tmp[0] >> 1 | result[3] << 31;
         
         result=result>>1;
-       
-        tmp=tmp>>1;
+
     }
-    return result;
+    return tmp;
 }

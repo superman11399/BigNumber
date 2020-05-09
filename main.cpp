@@ -13,14 +13,16 @@ int main(){
 	string c = Cong2Chuoi(a, b);
 	string c = Tru2Chuoi(a, b);*/
 	//cout << c << endl;
-	
+    
     QInt qi,qo;
-    qi.Input();
+   /* qi.Input();
     qi.PrintBin();
     qi=qi>>33;
     qi.PrintBin();
     qi=qi<<32;
     qi.PrintBin();
+    */
+    
     qi.Input();
     qi.PrintBin();
     qo.Input();
@@ -31,4 +33,5 @@ int main(){
     sub.PrintBin();
     QInt product=qi*qo;
     product.PrintBin();
+    
 }
