@@ -64,15 +64,18 @@ bool QInt::operator>(QInt q)
 {
     //so sánh khi cả 2 cùng âm
 
-    if ((*this).data[0] < 0 && q.data[0] < 0)
+    if ((*this).data[0] < 0 && q.data[0] < 0) //lỗi khi 1 số>max int và 1 số âm <max int
     {
-    	if (data[0] > q.data[0]) return true;
-    	else if (data[0] < q.data[0]) return false;
-
     	for (int i = 1; i < 4; i++)
     	{
-    		if (data[i] < q.data[i]) return true;
-    		else if (data[i] > q.data[i]) return false;
+            if (data[i] > 0 || q.data[i] > 0)
+            {
+                if (data[i] < q.data[i]) return true;
+                if (data[i] > q.data[i]) return false;
+            }
+
+    		if (data[i] > q.data[i]) return true; //lỗi khi -65 -35
+    		else if (data[i] < q.data[i]) return false;
     	}
     }
 
@@ -91,20 +94,23 @@ bool QInt::operator<(QInt q)
 
     if ((*this)[0] < 0 && q[0] < 0)
     {
-    	if ((*this)[0] < q[0]) return true;
-    	else if ((*this)[0] > q[0]) return false;
-    
     	for (int i = 1; i < 4; i++)
     	{
-    		if ((*this)[i] > q[i]) return true;
-    		else if ((*this)[i] < q[i]) return false;
+            if (data[i] > 0 || q.data[i] > 0)
+            {
+                if (data[i] > q.data[i]) return true;
+                if (data[i] < q.data[i]) return false;
+            }
+
+    		if (data[i] < q.data[i]) return true;
+    		else if (data[i] > q.data[i]) return false;
     	}
     }
 
     for (int i = 0; i < 4; i++)
     {
-        if ((*this)[i] < q[i]) return true;
-        else if ((*this)[i] > q[i]) return false;
+        if ((*this)[i] < q.data[i]) return true;
+        else if ((*this)[i] > q.data[i]) return false;
     }
     return false;
 }
@@ -339,68 +345,50 @@ QInt QInt::operator/(QInt m)
         throw "Loi chia 0.";
 
     QInt q = *this; //Q đóng vai trò là thương.
+    bool sig = false;
 
-    //Xét số bị chia là âm hay dương
-    if (data[0] < 0)
+    if (q.data[0] < 0)
     {
-        QInt a; //A đóng vai trò số dư
-        //dùng để khởi tạo a vối 128 bit 1.
-        bool* bitfull1 = new bool[128];
-        for (int i = 0; i < 128; i++)
-            bitfull1[i] = 1;
+        q = ~q + QInt(10,"1");
+        sig = !sig;
+    }
 
-        a.SetBitFromBin(bitfull1);
-        delete[]bitfull1;
+    if (m.data[0] < 0)
+    {
+        m = ~m + QInt(10, "1");
+        sig = !sig; //chỉ khi q và m khác dấu thì sig mới true
+    }
+ 
+    QInt a; //A đóng vai trò số dư
 
-        for (int i = 0; i < 128; i++)
-        {
+    for (int i = 0; i < 128; i++)
+    {
             //Shift Q, A
-            int car = GetBit(q.data[0], 0);
-            a = a << 1;
-            q = q << 1;
-            a.data[3] = a.data[3] | car;
+        int car = GetBit(q.data[0], 0);
+        a = a << 1;
+        q = q << 1;
+        a.data[3] = a.data[3] | car;
 
 
-            a = a - m;
-            if (a.data[0] < 0)
-            {
-                a = a + m;
-                q.data[3] = SetBit(q.data[3], 31, 0); //Q0 = 0
-            }
-            else
-            {
-                q.data[3] = SetBit1(q.data[3], 31); //Q0 = 1
-            }
+        a = a - m;
+        if (a.data[0] < 0)
+        {
+            a = a + m;
+            q.data[3] = SetBit(q.data[3], 31, 0); //Q0 = 0
+        }
+        else
+        {
+            q.data[3] = SetBit1(q.data[3], 31); //Q0 = 1
         }
     }
-    else //khi mà số chia dương
+
+    if (sig)
     {
-        QInt a; //A đóng vai trò số dư
-
-        for (int i = 0; i < 128; i++)
-        {
-            //Shift Q, A
-            int car = GetBit(q.data[0], 0);
-            a = a << 1;
-            q = q << 1;
-            a.data[3] = a.data[3] | car;
-
-
-            a = a - m;
-            if (a.data[0] < 0)
-            {
-                a = a + m;
-                q.data[3] = SetBit(q.data[3], 31, 0); //Q0 = 0
-            }
-            else
-            {
-                q.data[3] = SetBit1(q.data[3], 31); //Q0 = 1
-            }
-        }
+        q = ~q + QInt(10, "1");
     }
+
     return q;
 }
-
 
 /*
 Phép xoay trái
