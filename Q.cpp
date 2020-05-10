@@ -68,7 +68,7 @@ void QInt::PrintDec(){
 			kq.erase(0, 1);
 		kq.insert(0, "-");
 	}
-	cout << kq;
+	cout << kq<<endl;
 }
 
 ostream& operator << (ostream& os, QInt p) {
