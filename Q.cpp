@@ -6,7 +6,11 @@ void QInt::SetBitFromBin(bool* bin){
 	for (int i = 0; i < 128; i++)
 		data[i / 32] = SetBit(data[i / 32], i % 32, bin[i]);
 }
-
+void QInt::InputBin(string s){
+	int n = s.length() - 1;
+	for (int i=0; i <=n; i++)
+		data[(127 - n + i) / 32] = SetBit(data[(127 - n + i) / 32], (127 - n + i) % 32, s[i]-'0');
+}
 void QInt::InputUnsignedDec(string s){
 	bool* bin;
 	chuyenNhiPhan(s, bin);
@@ -19,7 +23,22 @@ void QInt::InputSignedDec(string s){
 	*this = ~(*this);
 	*this = *this + One;
 }
-
+void QInt::InputHex(string s){
+	int n = s.length();
+	int i = 0;
+	while (n >= 1){
+		int tmp = s[i]; 
+		if (tmp >= 'A')		// từ A-F
+			tmp = tmp - 55;		//đưa về 11-15
+		for (int j = 3; j >= 0; j--)
+		{
+			int t = tmp&(1 << j);
+			if (t)
+				data[(127 - n * 4 + 1 + 3 - j) / 32]=SetBit(data[(127 - n * 4 + 1 + 3 - j) / 32], (127 - n * 4 + 1 + 3 - j) % 32, 1);
+		}
+		n--; i++;
+	}
+}
 void QInt::ScanQInt()
 {
     string s;
@@ -70,7 +89,31 @@ void QInt::PrintDec(){
 	}
 	cout << kq<<endl;
 }
-
+string QInt::PrintHex(){
+	string kq;
+	int n = 0;
+	int dec = 0;	//số hex ở dạng thập phân
+	string tmp;
+	bool found = 0; //đã tìm thấy bit 1 đầu tiên chưa 
+	while (n <= 127){
+		dec += GetBit(data[n /32], n % 32)*pow(2, 3 - n % 4);
+		if (n % 4 == 3 && (dec > 0||found)){	//nếu tìm thấy r thì dec=0 đc
+			found = 1;
+			if (dec < 10){		//nếu từ 1-10 thì đổi thành chuỗi r thêm vào
+				kq.insert(0, to_string(dec)); 
+			}
+			else//từ  10-15 thì đổi sang A-F r thêm vào
+			{
+				tmp = dec + 55;
+				kq.insert(0, tmp);
+			}	
+			dec = 0;
+		}
+		n++;
+	}
+	reverse(kq.begin(), kq.end());
+	return kq;
+}
 ostream& operator << (ostream& os, QInt p) {
     int pos = 0;
     while (!GetBit(p.data[pos / 32], pos % 32))

@@ -26,12 +26,16 @@ public:
 	friend ostream& operator << (ostream&os, QInt p);
 
 	void SetBitFromBin(bool* bin);
+	void InputBin(string s);
 	void InputUnsignedDec(string s);
 	void InputSignedDec(string s);
+	void QInt::InputHex(string s);
+
     void ScanQInt();
 
 	void PrintDec();	//in chuỗi thập phân
 	void PrintBin();	//in chuỗi nhị phân
+	string PrintHex();	//in chuỗi thập lục phân
     int demBit();
 	~QInt(){}
     
