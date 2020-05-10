@@ -19,6 +19,33 @@ void QInt::InputSignedDec(string s){
 	*this = ~(*this);
 	*this = *this + One;
 }
+
+void QInt::ScanQInt()
+{
+    string s;
+    getline(cin, s);
+    int i = 0;
+
+    while (i < s.length())
+    {
+        if (s[i] <= '0' || s[i] >= '9')
+            if (s[i] != '+' && s[i] != '-')
+                s.erase(i, 1);
+        i++;
+    }
+
+    i = 1;
+    while (i < s.length())
+    {
+        if (s[i] == '+' || s[i] == '-')
+            s.erase(i, 1);
+        i++;
+    }
+
+    if (s[0] == '-') this->InputSignedDec(s);
+    else this->InputUnsignedDec(s);
+}
+
 void QInt::PrintBin(){
 	//cout << *this << endl;
 	int pos = 0;

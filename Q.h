@@ -28,6 +28,8 @@ public:
 	void SetBitFromBin(bool* bin);
 	void InputUnsignedDec(string s);
 	void InputSignedDec(string s);
+    void ScanQInt();
+
 	void PrintDec();	//in chuỗi thập phân
 	void PrintBin();	//in chuỗi nhị phân
     int demBit();
