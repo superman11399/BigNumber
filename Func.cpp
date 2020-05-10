@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-
 #include "Q.h"
 #include "Func.h"
 using namespace std;

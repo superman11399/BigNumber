@@ -1,10 +1,10 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #include "Q.h"
 #include "Func.h"
 using namespace std;
 
-void main(){
+int main(){
 		
 	 //QInt qa,qb;
 	 //string s; getline(cin, s);
@@ -94,4 +94,5 @@ void main(){
 
 	(b + b).PrintBin();
 	(b + b).PrintDec();
+    return 0;
 }

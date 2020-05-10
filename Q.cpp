@@ -1,4 +1,4 @@
-﻿#include <string>
+#include <string>
 #include "Q.h"
 #include "Func.h"
 
@@ -341,29 +341,39 @@ int QInt::demBit()
 QInt QInt::operator*(QInt a)
 {
     QInt tmp=*this;
+    
     QInt result;
+    
     // Q[-1] = 0
     bool Q_am1=0;
     
     for (int i=0;i<128;i++)
     {
+        // Trường hợp 10
         if (GetBit(tmp[3],31)==1 && Q_am1==0)
         {
             result=result - a;
         }
+        // Trường hợp 01
         else if (GetBit(tmp[3],31)==0 && Q_am1==1)
         {
             result=result + a;
          
         }
+        // Trường hợp 00 hoặc 11
         Q_am1=GetBit(tmp[3],31);
+        
+        //Đẩy bit cuối từ result sang bit đầu của tmp và dịch phải tmp
 		tmp[3] = (unsigned int)tmp[3] >> 1 | tmp[2] << 31;
 		tmp[2] = (unsigned int)tmp[2] >> 1 | tmp[1] << 31;
 		tmp[1] = (unsigned int)tmp[1] >> 1 | tmp[0] << 31;
 		tmp[0] = (unsigned int)tmp[0] >> 1 | result[3] << 31;
+        
+        // Dịch phải result
         result=result>>1;
        
     }
+    // Sau khi dịch thì kết quả nằm ở tmp
     return tmp;
 }
 
