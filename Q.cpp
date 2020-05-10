@@ -64,17 +64,19 @@ bool QInt::operator>(QInt q)
 {
     //so sánh khi cả 2 cùng âm
 
-    if ((*this).data[0] < 0 && q.data[0] < 0) //lỗi khi 1 số>max int và 1 số âm <max int
+    if ((*this).data[0] < 0 && q.data[0] < 0)
     {
     	for (int i = 1; i < 4; i++)
     	{
-            if (data[i] > 0 || q.data[i] > 0)
+            //Nếu trên cùng thứ tự phần tử có bit là dương thì so sánh ngược
+            if (data[i]*1.0 / q.data[i] < 0) 
             {
                 if (data[i] < q.data[i]) return true;
                 if (data[i] > q.data[i]) return false;
             }
 
-    		if (data[i] > q.data[i]) return true; //lỗi khi -65 -35
+            //So sánh bình thường
+    		if (data[i] > q.data[i]) return true; 
     		else if (data[i] < q.data[i]) return false;
     	}
     }
@@ -96,12 +98,14 @@ bool QInt::operator<(QInt q)
     {
     	for (int i = 1; i < 4; i++)
     	{
-            if (data[i] > 0 || q.data[i] > 0)
+            //Nếu trên cùng thứ tự phần tử có bit là dương thì so sánh ngược
+            if (data[i] * 1.0 / q.data[i] < 0)
             {
                 if (data[i] > q.data[i]) return true;
                 if (data[i] < q.data[i]) return false;
             }
 
+            //So sánh bình thường
     		if (data[i] < q.data[i]) return true;
     		else if (data[i] > q.data[i]) return false;
     	}
@@ -109,8 +113,9 @@ bool QInt::operator<(QInt q)
 
     for (int i = 0; i < 4; i++)
     {
-        if ((*this)[i] < q.data[i]) return true;
-        else if ((*this)[i] > q.data[i]) return false;
+        //So sánh bình thường
+        if (data[i] < q.data[i]) return true;
+        else if (data[i] > q.data[i]) return false;
     }
     return false;
 }
