@@ -39,6 +39,26 @@ void QInt::InputHex(string s){
 		n--; i++;
 	}
 }
+void QInt::Input(int mode, string s){
+	switch (mode){
+		case 2:{		//Hệ nhị phân
+			   InputBin(s);
+			   break;
+		}
+		case 10:{		//Hệ thập phân
+				if (s[0] == '-')
+					InputSignedDec(s);
+				else InputUnsignedDec(s);
+				break;
+		}
+		case 16:{
+				InputHex(s);
+				break;
+		}
+		default:
+				break;
+	}
+}
 void QInt::ScanQInt()
 {
     string s;
@@ -65,18 +85,22 @@ void QInt::ScanQInt()
     else this->InputUnsignedDec(s);
 }
 
-void QInt::PrintBin(){
+string QInt::ToBin(){
 	//cout << *this << endl;
 	int pos = 0;
+	string kq;
 	while (!GetBit(this->data[pos / 32], pos % 32))
 		pos++;
+	if (pos == 128) {
+		return "0";
+	}
 	while (pos < 128){
-		cout << GetBit(this->data[pos / 32], pos % 32);
+		kq+= to_string(GetBit(this->data[pos / 32], pos % 32));
 		pos++;
 	}
-	cout << endl;
+	return kq;
 }
-void QInt::PrintDec(){
+string QInt::ToDec(){
 	string kq = "0";
 	for (int i = 0; i < 127; i++)
 	if (GetBit(data[(i + 1) / 32], (i + 1) % 32))
@@ -87,9 +111,9 @@ void QInt::PrintDec(){
 			kq.erase(0, 1);
 		kq.insert(0, "-");
 	}
-	cout << kq<<endl;
+	return kq;
 }
-string QInt::PrintHex(){
+string QInt::ToHex(){
 	string kq;
 	int n = 0;
 	int dec = 0;	//số hex ở dạng thập phân
@@ -113,6 +137,20 @@ string QInt::PrintHex(){
 	}
 	reverse(kq.begin(), kq.end());
 	return kq;
+}
+string QInt::Output(int mode){
+	switch (mode)
+	{
+	case 2:
+		return ToBin();
+	case 10:
+		return ToDec();
+	case 16:
+		return ToHex();
+	default:
+		break;
+	}
+	return "";
 }
 ostream& operator << (ostream& os, QInt p) {
     int pos = 0;
@@ -378,6 +416,9 @@ int QInt::demBit()
         else break;
     }
     return count;
+}
+int QInt::GetMyBit(int pos){
+	return GetBit(data[pos / 32], pos % 32);
 }
 
 // Phép nhân trên bit: Thuật toán Booth

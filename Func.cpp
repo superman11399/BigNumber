@@ -1,5 +1,6 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
+#include <string>
 #include "Q.h"
 #include "Func.h"
 using namespace std;
@@ -39,13 +40,49 @@ string chia2(string str)
 	}
 	for (; i< str.length(); i++)
 	{
+		
 		tmp[k++] = ((str[i] - '0' + j) / 2 + '0');
 		j = ((str[i] - '0' + j) % 2) * 10;
 	}
 	tmp.resize(k);
 	return tmp;
 }
-
+string nhan2(string s){
+	int nho = 0;
+	string kq;
+	int n = s.length()-1;
+	kq.resize(n + 1);
+	for (; n >= 0; n--){
+		kq[n] = ((s[n] - '0') * 2 + nho) % 10 + '0';
+		nho = ((s[n] - '0') * 2 + nho) / 10;
+	}
+	if (nho)
+		kq.insert(0, "1");
+	return kq;
+}
+bool bang0(string s){	//Chuỗi toàn 0
+	int n = s.length();
+	for (int i = 0; i < n;i++)
+	if (s[i] != '0') return false;
+	return true;
+}
+string SauThapPhanToBin(string s){
+	string kq, tmp;
+	int n = 111;
+	int i = 0;
+	while (!bang0(s) && i < n){
+		tmp = nhan2(s);
+		int m = s.length();
+		s = nhan2(s);
+		if (tmp.length()>m){
+			kq += "1";
+			s.erase(0, 1);
+		}
+		else kq += "0";
+		i++;
+	}
+	return kq;
+}
 void chuyenNhiPhan(string &str, bool* &binary)
 {
 	binary = new bool[128];

@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Func.h"
 using namespace std;
+
 class QInt{
 	int data[4];
 public:
@@ -11,17 +12,7 @@ public:
 	}
     QInt(int type, string s) : QInt()
     {
-        switch (type)
-        {
-                // Hệ thập phân
-            case 10:
-            {
-                bool* bin;
-                chuyenNhiPhan(s, bin);
-                this->SetBitFromBin(bin);
-                break;
-            }
-        }
+		Input(type, s);
     }
 	friend ostream& operator << (ostream&os, QInt p);
 
@@ -29,14 +20,17 @@ public:
 	void InputBin(string s);
 	void InputUnsignedDec(string s);
 	void InputSignedDec(string s);
-	void QInt::InputHex(string s);
+	void InputHex(string s);
 
+	void Input(int mode, string s);
     void ScanQInt();
 
-	void PrintDec();	//in chuỗi thập phân
-	void PrintBin();	//in chuỗi nhị phân
-	string PrintHex();	//in chuỗi thập lục phân
+	string ToDec();	//in chuỗi thập phân
+	string ToBin();	//in chuỗi nhị phân
+	string ToHex();	//in chuỗi thập lục phân
+	string Output(int mode);
     int demBit();
+	int GetMyBit(int pos);
 	~QInt(){}
     
     QInt& operator=(QInt a);

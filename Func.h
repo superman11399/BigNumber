@@ -1,6 +1,6 @@
-#pragma once
+﻿#pragma once
 #include <iostream>
-#include "Q.h"
+//#include "Q.h"
 using namespace std;
 
 int GetBit(int X, int i);
@@ -11,6 +11,9 @@ int BinToDec(int kq[32]);
 void XuatMang(int a[], int n);
 
 string chia2(string str);
+string nhan2(string str);
+
+string SauThapPhanToBin(string s);	//chuyển phần thập phân thành nhị phân
 void chuyenNhiPhan(string &str, bool* &binary);
 
 string Cong2Chuoi(string a, string b);
