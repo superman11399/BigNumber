@@ -12,16 +12,18 @@ public:
 	
 	friend ostream& operator << (ostream&os, QFloat p);
 
-	void SetBitFromBin(bool* bin);
+	//void SetBitFromBin(bool* bin);
 	void InputBin(string s);
 	void InputUnsignedDec(string s);
 	void InputSignedDec(string s);
+	void InputDec(string s);
 
-
+	bool chuan();  //dạng chuẩn ?
+	bool inf();
 	string ToBin();	//in chuỗi nhị phân
 	string ToDec();
 	~QFloat(){}
-
+	
 	QFloat operator&(QFloat a);
 	QFloat operator|(QFloat a);
 	QFloat operator^(QFloat a);

@@ -15,9 +15,9 @@ void QFloat::InputUnsignedDec(string s){
 	if (n > 1 || (n == 1 && pn[0] == '1')){	//phần nguyên >=1
 		int t = n - 1;
 		QInt khong(10, "16383");	//=2^14-1 (Số 0 ở dạng biased 15bit 
-		for (int j = 0; j < t; j++){	
+		/*for (int j = 0; j < t; j++){	
 			
-		}
+		}*/
 		QInt tmp(10, to_string(t));
 		QInt mu;
 		mu = khong + tmp;
@@ -68,12 +68,31 @@ void QFloat::InputUnsignedDec(string s){
 		data[i / 32] = SetBit(data[i / 32], i % 32, tp[i - 16] - '0');
 }
 void QFloat::InputSignedDec(string s){
-
+	s.erase(0, 1);
+	InputUnsignedDec(s);
+	data[0] = SetBit(data[0], 0, 1);
+}
+void QFloat::InputDec(string s){
+	if (s[0] == '-')
+		InputSignedDec(s);
+	else InputUnsignedDec(s);
 }
 void QFloat::InputBin(string s){
 	int n = s.length() - 1;
 	for (int i = 0; i <= n; i++)
 		data[i / 32] = SetBit(data[i / 32], i % 32, s[i] - '0');
+}
+bool QFloat::chuan(){		//15 bit 0 -> k chuẩn
+	for (int i = 1; i <= 15;i++)
+	if (GetBit(data[i / 32], i % 32))
+		return true;
+	return false;
+}
+bool QFloat::inf(){		//15 bit 1 -> Số vô cực ?
+	for (int i = 1; i <= 15; i++)
+	if (!GetBit(data[i / 32], i % 32))
+		return false;
+	return true;
 }
 string QFloat::ToBin(){
 	//cout << *this << endl;
@@ -83,5 +102,49 @@ string QFloat::ToBin(){
 		kq += to_string(GetBit(this->data[pos / 32], pos % 32));
 		pos++;
 	}
+	return kq;
+}
+string QFloat::ToDec(){	//dạng X*2^e 
+	string kq;
+	QInt khong(10, "16383");
+	string mu_tmp;		
+	for (int i = 1; i <= 15; i++)	//lấy chuỗi bit 1-15
+		mu_tmp += to_string(GetBit(data[i / 32], i % 32));
+	QInt m(2, mu_tmp);
+	QInt mu_kq;
+	if (m > khong){
+		mu_kq = m - khong;
+		mu_tmp = mu_kq.ToDec();
+	}
+	else {
+		mu_kq = khong - m;
+		mu_tmp = "-"+mu_kq.ToDec();
+	}
+	int pos = 127;	//vị trí cuối cùng khác 0
+	string tmp;
+	
+	while (GetBit(data[pos / 32], pos % 32) == 0 && pos >= 16) 
+		pos--;		
+	for (int i = 16; i <= pos; i++)
+		tmp += to_string(GetBit(data[i / 32], i % 32));
+	//if (pos == 15) tmp = "0";	//phần trị toàn 0
+	int mu = pos - 16 + 1;
+	if (chuan()){	//Nếu dạng chuẩn   1.f * 2^e
+		tmp.insert(0, "1");
+		//cout << mu_tmp << " " << mu << endl;
+		mu_tmp = to_string(stoi(mu_tmp)- mu);
+		
+	}
+	else if (inf())
+		if (pos==15)		//121 bit trị = 0 
+			return "infinity and beyond!";
+		else return "Error";
+	else {	// Dạng k chuẩn  0.f * 2^e
+		tmp.insert(0, "0");
+		mu_tmp = "-" + to_string(16382 + mu);
+	}
+	QInt a(2, tmp);
+	kq = a.ToDec() + "* 2^" + mu_tmp;
+	if (GetBit(data[0], 0)) kq.insert(0, "-");
 	return kq;
 }

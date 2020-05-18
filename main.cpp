@@ -9,10 +9,10 @@ int main(){
 		
 	QFloat a;
 	string s; getline(cin, s);
-	a.InputUnsignedDec(s);
+	a.InputDec(s);
 	cout << a.ToBin() << endl;
+	cout << a.ToDec() << endl;
 
-	
 
     return 0;
 }

@@ -47,6 +47,28 @@ string chia2(string str)
 	tmp.resize(k);
 	return tmp;
 }
+//string chia2_v2(string str)
+//{
+//	string tmp;
+//	tmp.resize(str.length());
+//	unsigned short int i = 0, j = 0, k = 0;
+//	while (str[i] == '0'&&i < str.length()){
+//		tmp[i++] = '0';
+//		k++;
+//	}
+//	if (str[i] - '0' < 2){
+//		tmp[i] = '0';
+//		i++;
+//		j = 10; k = i;
+//	}
+//	for (; i< str.length(); i++)
+//	{
+//		tmp[k++] = ((str[i] - '0' + j) / 2 + '0');
+//		j = ((str[i] - '0' + j) % 2) * 10;
+//	}
+//	//tmp.resize(k);
+//	return tmp;
+//}
 string nhan2(string s){
 	int nho = 0;
 	string kq;
@@ -147,3 +169,22 @@ string LuyThua2(int n){
 		kq = Cong2Chuoi(kq, kq);
 	return kq;
 }
+
+//string LuyThuaAm2(int n){  //2^-n	0.25 thì lưu 25
+//	
+//	string kq = "5";
+//	for (int i = 1; i < n; i++){
+//		kq += "0";
+//		kq = chia2_v2(kq);
+//	}
+//	return kq;
+//}
+//string Cong2ChuoiLuyThuaAm2(string a, string b){
+//	while (a.length() < b.length())
+//		a += "0";
+//	while (b.length() < a.length())
+//		b += "0";
+//	string kq;
+//	kq = Cong2Chuoi(a, b);
+//	return kq;
+//}
