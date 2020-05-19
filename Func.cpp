@@ -90,7 +90,7 @@ bool bang0(string s){	//Chuỗi toàn 0
 }
 string SauThapPhanToBin(string s){
 	string kq, tmp;
-	int n = 111;
+	int n = 300;   //111
 	int i = 0;
 	while (!bang0(s) && i < n){
 		tmp = nhan2(s);
