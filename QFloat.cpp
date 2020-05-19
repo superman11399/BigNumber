@@ -5,22 +5,22 @@
 
 void QFloat::InputUnsignedDec(string s){
 	int i = s.find('.');
-	string pn = s.substr(0, i);
-	string tp = s.substr(i + 1);
+	string pn = s.substr(0, i);	//phần nguyên
+	string tp = s.substr(i + 1);//phần thập phân
 	QInt a;
 	a.Input(10, pn);
-	pn = a.ToBin();
-	tp = SauThapPhanToBin(tp);
-	int n = pn.length();
+	pn = a.ToBin();				//phần nguyên sang nhị phân
+	tp = SauThapPhanToBin(tp);	//phần tp sang nhị phân
+	int n = pn.length();		
 	if (n > 1 || (n == 1 && pn[0] == '1')){	//phần nguyên >=1
-		int t = n - 1;
+		int t = n - 1;			//dời dấu chấm sang trái ngay sau bit 1 đầu tiên của pn
 		QInt khong(10, "16383");	//=2^14-1 (Số 0 ở dạng biased 15bit 
 		/*for (int j = 0; j < t; j++){	
 			
 		}*/
 		QInt tmp(10, to_string(t));
 		QInt mu;
-		mu = khong + tmp;
+		mu = khong + tmp;		//thì cộng vào số mũ
 		string m=mu.ToBin();
 		//SetBit cho phần mũ (dương biased)
 		if (m.length()>15){	//độ dài chuỗi mũ lớn hơn 15
@@ -34,7 +34,7 @@ void QFloat::InputUnsignedDec(string s){
 		else{	//biểu diễn được
 			for (int i = 1; i <= 15; i++)	//bit 1-15 là của phần mũ
 				data[i / 32] = SetBit(data[i / 32], i % 32, mu.GetMyBit(127 - 15 + i));
-			tp = pn.erase(0, 1) + tp;
+			tp = pn.erase(0, 1) + tp;	//xóa bit 1 đầu (trước dấu chấm), r nối vs tp
 		}
 	}
 	else{	//phần nguyên =0 -> số mũ âm (biased)
@@ -44,7 +44,7 @@ void QFloat::InputUnsignedDec(string s){
 		QInt khong(10, "16383");	//=2^14-1 (Số 0 ở dạng biased 15bit 
 		QInt tmp(10, to_string(pos));
 		QInt mu;
-		mu = khong - tmp;
+		mu = khong - tmp;	//dời dấu phẩy qua phải nên số mũ =0-pos
 		string m = mu.ToBin();
 		
 		if (pos - 16382 > 112){	//Số mũ quá âm, underflow
@@ -112,39 +112,41 @@ string QFloat::ToDec(){	//dạng X*2^e
 		mu_tmp += to_string(GetBit(data[i / 32], i % 32));
 	QInt m(2, mu_tmp);
 	QInt mu_kq;
-	if (m > khong){
+	if (m > khong){	//nếu số mũ >0
 		mu_kq = m - khong;
 		mu_tmp = mu_kq.ToDec();
 	}
-	else {
+	else {		//số mũ âm
 		mu_kq = khong - m;
 		mu_tmp = "-"+mu_kq.ToDec();
 	}
-	int pos = 127;	//vị trí cuối cùng khác 0
-	string tmp;
+	int pos = 127;	//vị trí cuối cùng khác 0 ở phần trị
+	string tmp;		//chuỗi phần trị
 	
 	while (GetBit(data[pos / 32], pos % 32) == 0 && pos >= 16) 
 		pos--;		
-	for (int i = 16; i <= pos; i++)
+	for (int i = 16; i <= pos; i++)		//đưa phần trị vào chuỗi
 		tmp += to_string(GetBit(data[i / 32], i % 32));
 	//if (pos == 15) tmp = "0";	//phần trị toàn 0
 	int mu = pos - 16 + 1;
 	if (chuan()){	//Nếu dạng chuẩn   1.f * 2^e
-		tmp.insert(0, "1");
+		tmp.insert(0, "1");	//thêm bit 1 đầu (1f)
 		//cout << mu_tmp << " " << mu << endl;
 		mu_tmp = to_string(stoi(mu_tmp)- mu);
+		//dời dấu phẩy qua phải nên số mũ trừ đi số bit dời
 		
 	}
 	else if (inf())
 		if (pos==15)		//121 bit trị = 0 
 			return "infinity and beyond!";
 		else return "Error";
-	else {	// Dạng k chuẩn  0.f * 2^e
-		tmp.insert(0, "0");
+	else {	// Dạng k chuẩn  0.f * 2^e  (e<0)
+		tmp.insert(0, "0");	//thêm bit 0 đầu (0f)
 		mu_tmp = "-" + to_string(16382 + mu);
+		//dời dấu phẩy qua phải nên - (mũ + số bit dời)
 	}
-	QInt a(2, tmp);
+	QInt a(2, tmp);	//chuyển phần trị (1f/0f) về thập phân 
 	kq = a.ToDec() + "* 2^" + mu_tmp;
-	if (GetBit(data[0], 0)) kq.insert(0, "-");
+	if (GetBit(data[0], 0)) kq.insert(0, "-");	//nếu âm thêm dấu -
 	return kq;
 }
