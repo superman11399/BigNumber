@@ -82,6 +82,22 @@ void QFloat::InputBin(string s){
 	for (int i = 0; i <= n; i++)
 		data[i / 32] = SetBit(data[i / 32], i % 32, s[i] - '0');
 }
+void QFloat::Input(int mode, string s){
+	switch (mode){
+	case 2:{		//Hệ nhị phân
+			   InputBin(s);
+			   break;
+	}
+	case 10:{		//Hệ thập phân
+				if (s[0] == '-')
+					InputSignedDec(s);
+				else InputUnsignedDec(s);
+				break;
+	}
+	default:
+		break;
+	}
+}
 bool QFloat::chuan(){		//15 bit 0 -> k chuẩn
 	for (int i = 1; i <= 15;i++)
 	if (GetBit(data[i / 32], i % 32))
@@ -148,5 +164,31 @@ string QFloat::ToDec(){	//dạng X*2^e
 	QInt a(2, tmp);	//chuyển phần trị (1f/0f) về thập phân 
 	kq = a.ToDec() + "* 2^" + mu_tmp;
 	if (GetBit(data[0], 0)) kq.insert(0, "-");	//nếu âm thêm dấu -
+	return kq;
+}
+string QFloat::Output(int mode){
+	switch (mode)
+	{
+	case 2:
+		return ToBin();
+	case 10:
+		return ToDec();
+	default:
+		break;
+	}
+	return "";
+}
+QFloat QFloat::operator + (QFloat a){
+	string tmp, tmp2;
+	for (int i = 16; i <= 127; i++)		//đưa phần trị của this vào chuỗi
+		tmp += to_string(GetBit(data[i / 32], i % 32));
+	for (int i = 16; i <= 127; i++)		//đưa phần trị của a vào chuỗi
+		tmp2 += to_string(GetBit(a.data[i / 32], i % 32));
+	if (this->chuan()) tmp.insert(0, "1");	//nếu chuẩn thì thêm bit 1 đầu
+	else tmp.insert(0, "0");				//k thì thêm 0
+	if (a.chuan()) tmp2.insert(0, "1");
+	else tmp2.insert(0, "0");
+	QInt q1(2, tmp), q2(2, tmp2);
+	QFloat kq;
 	return kq;
 }
