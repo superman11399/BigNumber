@@ -171,24 +171,27 @@ int& QInt::operator[](int ind)
 bool QInt::operator>(QInt q)
 {
     //so sánh khi cả 2 cùng âm
-
     if ((*this).data[0] < 0 && q.data[0] < 0)
     {
-    	for (int i = 1; i < 4; i++)
-    	{
+        // so sánh phần tử đầu cùng âm
+        if ((*this).data[0] > q.data[0]) return true;
+        if ((*this).data[0] < q.data[0]) return false;
+
+        // nếu phần tử đầu bằng nhau thì xét tiếp các bit sau
+        for (int i = 1; i < 4; i++)
+        {
             //Nếu trên cùng thứ tự phần tử có bit là dương thì so sánh ngược
-            if (data[i]*1.0 / q.data[i] < 0) 
+            if (data[i] * 1.0 / q.data[i] < 0)
             {
                 if (data[i] < q.data[i]) return true;
                 if (data[i] > q.data[i]) return false;
             }
 
             //So sánh bình thường
-    		if (data[i] > q.data[i]) return true; 
-    		else if (data[i] < q.data[i]) return false;
-    	}
+            if (data[i] > q.data[i]) return true;
+            else if (data[i] < q.data[i]) return false;
+        }
     }
-
     //so sánh trong các th khác 2 số cùng âm
     for (int i = 0; i < 4; i++)
     {
@@ -204,9 +207,14 @@ bool QInt::operator<(QInt q)
 
     if ((*this)[0] < 0 && q[0] < 0)
     {
-    	for (int i = 1; i < 4; i++)
-    	{
-            //Nếu trên cùng thứ tự phần tử có bit là dương thì so sánh ngược
+        // so sánh phần tử đầu cùng âm
+        if ((*this).data[0] < q.data[0]) return true;
+        if ((*this).data[0] > q.data[0]) return false;
+
+        // nếu phần tử đầu bằng nhau thì xét tiếp các bit sau
+        for (int i = 1; i < 4; i++)
+        {
+            //Nếu trên cùng thứ tự phần tử trái dấu nhau thì so sánh ngược
             if (data[i] * 1.0 / q.data[i] < 0)
             {
                 if (data[i] > q.data[i]) return true;
@@ -214,9 +222,9 @@ bool QInt::operator<(QInt q)
             }
 
             //So sánh bình thường
-    		if (data[i] < q.data[i]) return true;
-    		else if (data[i] > q.data[i]) return false;
-    	}
+            if (data[i] < q.data[i]) return true;
+            else if (data[i] > q.data[i]) return false;
+        }
     }
 
     for (int i = 0; i < 4; i++)
