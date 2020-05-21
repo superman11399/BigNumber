@@ -14,8 +14,14 @@ void DocDayBit(int X, int a[32]){
 int SetBit1(int X, int i){
 	return  X | (1 << (31 - i));
 }
+int SetBit0(int X, int i){
+	return X& ~(1 << (31 - i));
+}
 int SetBit(int X, int i, int gt){
 	return  X | (gt << (31 - i));
+}
+void MySetBit(int &X, int i, int gt){
+	X = X | (gt << (31 - i));
 }
 int BinToDec(int kq[32]){
 	int X = 0;

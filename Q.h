@@ -31,33 +31,34 @@ public:
 	string Output(int mode);
     int demBit();
 	int GetMyBit(int pos);
+	bool bang0();	//toàn bit 0
 	~QInt(){}
     
     QInt& operator=(QInt a);
       
-      int& operator[](int ind);
+    int& operator[](int ind);
       
-      QInt operator&(QInt a);
-      QInt operator|(QInt a);
-      QInt operator^(QInt a);
-      QInt operator~();
+    QInt operator&(QInt a);
+    QInt operator|(QInt a);
+    QInt operator^(QInt a);
+    QInt operator~();
       
-      QInt operator+(QInt a);
-      QInt operator-(QInt a);
-      QInt operator*(QInt a);
-      QInt operator/(QInt a);
+    QInt operator+(QInt a);
+    QInt operator-(QInt a);
+    QInt operator*(QInt a);
+    QInt operator/(QInt a);
 
-      QInt ror();
-      QInt rol();
+    QInt ror();
+    QInt rol();
       
-      QInt operator>>(int n);
-      QInt operator<<(int n);
+    QInt operator>>(int n);
+    QInt operator<<(int n);
       
-      bool operator<(QInt a);
-      bool operator<=(QInt a);
-      bool operator>(QInt a);
-      bool operator>=(QInt a);
-      bool operator!=(QInt a);
-      bool operator==(QInt a);
+    bool operator<(QInt a);
+    bool operator<=(QInt a);
+    bool operator>(QInt a);
+    bool operator>=(QInt a);
+    bool operator!=(QInt a);
+    bool operator==(QInt a);
   
 };

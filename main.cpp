@@ -76,7 +76,19 @@ int main(int argc, char* argv[]){
 					res.push_back(s);
 				
 				if (res.size() == 4){	//4 tham số -> có phép tính (trừ not, ror, rol
-					output << "Xin loi thay em chua lam phan nay\n";
+					QFloat a(stoi(res[0]), res[1]);
+					
+					QFloat b(stoi(res[0]), res[3]);
+					cout << a.ToBin() << endl << a.ToDec() << endl;
+					cout << b.ToBin() << endl << b.ToDec() << endl;
+					if (res[2] == "+")
+						output << (a+b).Output(stoi(res[0])) << endl;
+					else if (res[2] == "-")
+						output << (a - b).Output(stoi(res[0])) << endl;
+					else if (res[2] == "*")
+						output << (a * b).Output(stoi(res[0])) << endl;
+					else if (res[2] == "/")
+						output << (a / b).Output(stoi(res[0])) << endl;
 				}
 				else{	//3 tham số -> chuyển hệ, và phép ~ ror rol
 					QFloat a(stoi(res[0]), res[2]);
@@ -100,3 +112,23 @@ int main(int argc, char* argv[]){
 
     return 0;
 }
+
+
+//void main(){
+//
+//	/*QInt a(10, "-2");
+//	QInt b(10, "-5");
+//	cout << (a - b).ToDec() << endl;*/
+//
+//	QFloat a;
+//	cout << a.ToBin() << endl;
+//	a.SetMyBit(0, 1);
+//	cout << a.ToBin() << endl;
+//	a.SetMyBit(0, 0);
+//	cout << a.ToBin() << endl;
+//	a.SetMyBit(1, 1);
+//	cout << a.ToBin() << endl;
+//	a.SetMyBit(1, 0);
+//	cout << a.ToBin() << endl;
+//	
+//}

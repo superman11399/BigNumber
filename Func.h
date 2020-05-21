@@ -6,7 +6,9 @@ using namespace std;
 int GetBit(int X, int i);
 void DocDayBit(int X, int a[32]);
 int SetBit1(int X, int i);
+int SetBit0(int X, int i);
 int SetBit(int X, int i, int gt);
+void MySetBit(int &X, int i, int gt);
 int BinToDec(int kq[32]);
 void XuatMang(int a[], int n);
 
